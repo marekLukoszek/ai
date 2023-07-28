@@ -68,7 +68,7 @@ def build_net(training_data, width=28, height=28, verbose=False):
     return model
 
 
-def train(model, training_data, callback=True, batch_size=256, epochs=3):
+def train(model, training_data, callback=True, batch_size=256, epochs=10):
     (x_train, y_train), (x_test, y_test) = training_data
 
     if callback == True:
@@ -97,4 +97,4 @@ if __name__ == '__main__':
     training_data = load_data(width=28, height=28, max_=None)
 
     model = build_net(training_data, width=28, height=28, verbose=True)
-    train(model, training_data, epochs=3)
+    train(model, training_data, epochs=10)

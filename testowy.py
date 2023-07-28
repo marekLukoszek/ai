@@ -6,5 +6,5 @@ train_labels = np.load('emnist_train_labels_with_custom_data.npy')
 print(train_images.shape)
 print(train_labels.shape)
 
-print(train_images[60009])
-print(train_labels[88800])
+print(train_images[88803])
+print(train_labels[88803])

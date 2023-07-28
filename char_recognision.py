@@ -10,18 +10,19 @@ def predict_letter(model, image_path):
     image_array = np.array(image)
     image_array = image_array.reshape(1, image_array.shape[0], image_array.shape[1], 1)
     image_array = image_array.astype('float32') / 255.0
+    negative_array = 1 - image_array
 
     plt.imshow(image_array[0], cmap='gray')
     plt.show()
 
-    prediction = model.predict(image_array)
+    prediction = model.predict(negative_array)
     predicted_label = np.argmax(prediction)
     return predicted_label
 
 
 if __name__ == '__main__':
-    model = load_model('bin/my_emnist_model.h5')
-    predicted_label = predict_letter(model, 'samples/a.jpg')
+    model = load_model('bin/my_emnist_model_with_custom_data.h5')
+    predicted_label = predict_letter(model, 'samples/e.jpg')
     mapping = {i: chr(i + 97) for i in range(26)}
     if predicted_label < 26:
         predicted_letter = mapping[predicted_label]
