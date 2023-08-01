@@ -3,7 +3,6 @@ from keras.models import Sequential, save_model
 import keras
 import numpy as np
 import os
-from PIL import Image
 import tensorflow as tf
 import tensorflow_datasets as tfds
 
@@ -36,6 +35,9 @@ def load_data(width=28, height=28, max_=None):
     x_test = np.array([x.numpy() for x, _ in test_ds])
     y_test = np.array([y.numpy() for _, y in test_ds])
 
+    image_train = image_train / 255
+    x_test = x_test / 255
+
     return (image_train, label_train), (x_test, y_test)
 
 
@@ -63,12 +65,12 @@ def build_net(training_data, width=28, height=28, verbose=False):
     model.add(Dense(27, activation='softmax'))
 
     model.compile(loss='categorical_crossentropy',
-                  optimizer='adadelta',
+                  optimizer='adam',
                   metrics=['accuracy'])
     return model
 
 
-def train(model, training_data, callback=True, batch_size=256, epochs=10):
+def train(model, training_data, callback=True, batch_size=256, epochs=5):
     (x_train, y_train), (x_test, y_test) = training_data
 
     if callback == True:
@@ -97,4 +99,4 @@ if __name__ == '__main__':
     training_data = load_data(width=28, height=28, max_=None)
 
     model = build_net(training_data, width=28, height=28, verbose=True)
-    train(model, training_data, epochs=10)
+    train(model, training_data, epochs=5)

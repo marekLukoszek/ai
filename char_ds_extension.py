@@ -16,15 +16,14 @@ def load_data_with_custom_image(width=28, height=28, verbose=True):
     train_images = train_images.reshape((-1, 28, 28))
 
     # moj jpg
-    custom_image = Image.open('samples/b_B.jpg')
+    custom_image = Image.open('samples/b_A.jpg')
     custom_image = custom_image.resize((28, 28))
     custom_image = custom_image.convert('L')
     custom_image = np.array(custom_image)
-    #custom_image = custom_image.astype(np.float32) / 255.0
     negative_image = 1 - custom_image
 
     custom_label = np.zeros(27)
-    custom_label[1] = 1  #indeks to numer kolejności litery w alfabecie
+    custom_label[5] = 1  #indeks to numer kolejności litery w alfabecie
 
     # print(np.shape(custom_image))
     # print(np.shape(train_images))
@@ -42,10 +41,12 @@ def load_data_with_custom_image(width=28, height=28, verbose=True):
     np.save('emnist_train_images_with_custom_data.npy', train_images)
     np.save('emnist_train_labels_with_custom_data.npy', train_labels)
 
+    train_images = train_images / 255.0
+
     return train_images, train_labels
 
 
-def train(model, train_images, train_labels, callback=True, batch_size=256, epochs=5):
+def train(model, train_images, train_labels, callback=True, batch_size=256, epochs=10):
     tbCallBack = keras.callbacks.TensorBoard(log_dir='./Graph', histogram_freq=0, write_graph=True,
                                              write_images=True) if callback else None
 
@@ -64,4 +65,4 @@ if __name__ == '__main__':
     train_images, train_labels = load_data_with_custom_image(width=28, height=28, verbose=False)
 
     my_new_model = tf.keras.models.load_model('bin/my_emnist_model_with_custom_data.h5')
-    train(my_new_model, train_images, train_labels, True, 5)
+    train(my_new_model, train_images, train_labels, True, 10)
